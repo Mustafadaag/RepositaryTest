@@ -1,39 +1,41 @@
 extends layout
+include ortak_fonksiyonlar/fonksiyonlar
 block content
-  //Başlık bölümündeki bilgileri ayarlaya
   #banner.page-header
     //satır oluştur
     .row
       .col-lg-6
-        h1
-          |Mekan32
-          small &nbsp;Isparta civarındaki mekanları keşfedin!
+		//controller icinde tanimladigimiz degiskenleri kullandik
+		//ya esittir isaretiyle ya da #{} biciminde
+        h1= sayfaBaslik.siteAd
+		  small &nbsp;#{sayfaBaslik.aciklama}
   .row
     //mobil uyumlu listeleme
     .col-xs-12.col-sm-12
-      //Liste grubu oluştur
+      //each ifadesi dizide dolaşmayı sağlar.
+	  //bir nevi for döngüsü
+	  each mekan in mekanlar
       .row.list-group
-       //Listeye öğe ekleme. Birden fazla eleman ekliycekseniz
-       //aşağıdaki kodu kopyalayın ve yapıştırın
        .col-xs-12.list-group-item
            //Linklerin, yıldızların ve adresin oluşturulması
            h4
-             a(href='/mekan/') Starbucks
+             a(href='/mekan/')= mekan.ad
              small &nbsp;
-             span.glyphicon.glyphicon-star
-             span.glyphicon.glyphicon-star
-             span.glyphicon.glyphicon-star
-             span.glyphicon.glyphicon-star
-             span.glyphicon.glyphicon-star-empty
-           span.badge.pull-right.badge-default 10km
-           p.address Centrum Garden AVM
+             //javascrpit kodu eklemek icin - isareti kullan
+			 //for döngüsüyle mekan puanı kadar dolu yıldız
+			 //geri kalanlar bos yıldız.
+			 +puanOlustur(mekan.puan)
+			 -for (var i=1; i<=mekan.puan; i++)
+				span.glyphicon.glyphicon-star
+			 -for(var i= mekan.puan; i<5; i++)
+				span.glyphicon.glyphicon-star-empty
+           span.badge.pull-right.badge-default= mekan.mesafe
+           p.address= mekan.adres
            p
-              span.label.label-warning Dünya Kahveleri
-              | &nbsp;
-              span.label.label-warning Kekler
-              | &nbsp;
-              span.label.label-warning Pastalar
-              | &nbsp;            
+		    //imkanlar da dizi oldugu icin yine each ile dolastık
+			each imkan in mekan.imkanlar
+			 span.label.label-warning= imkan
+             | &nbsp;            
     .col-xs-12.col-sm-4
   .row
     //mobil uyumlu listeleme
