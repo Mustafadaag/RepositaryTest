@@ -1,13 +1,17 @@
 extends layout
-include ortak_fonksiyonlar/fonksiyonlar
-block content
+mixin puanOlustur(puan)
+ -for (var i=1; i<=puan; i++)
+	span.glyphicon.glyphicon-star
+ -for (var i= puan; i<5; i++)
+	span.glyphicon.glyphicon-star-empty
+block content //include ortak_fonksiyonlar/fonksiyonlar
   #banner.page-header
     //satır oluştur
     .row
       .col-lg-6
-		//controller icinde tanimladigimiz degiskenleri kullandik
-		//ya esittir isaretiyle ya da #{} biciminde
-        h1= sayfaBaslik.siteAd
+        //Controller içinde tanımladığımız değişkenleri kullandık
+		//Ya eşittir işaretiyle ya da #{} biçiminde
+		h1= sayfaBaslik.siteAd
 		  small &nbsp;#{sayfaBaslik.aciklama}
   .row
     //mobil uyumlu listeleme
@@ -15,8 +19,8 @@ block content
       //each ifadesi dizide dolaşmayı sağlar.
 	  //bir nevi for döngüsü
 	  each mekan in mekanlar
-      .row.list-group
-       .col-xs-12.list-group-item
+       .row.list-group
+        .col-xs-12.list-group-item
            //Linklerin, yıldızların ve adresin oluşturulması
            h4
              a(href='/mekan/')= mekan.ad
@@ -25,10 +29,6 @@ block content
 			 //for döngüsüyle mekan puanı kadar dolu yıldız
 			 //geri kalanlar bos yıldız.
 			 +puanOlustur(mekan.puan)
-			 -for (var i=1; i<=mekan.puan; i++)
-				span.glyphicon.glyphicon-star
-			 -for(var i= mekan.puan; i<5; i++)
-				span.glyphicon.glyphicon-star-empty
            span.badge.pull-right.badge-default= mekan.mesafe
            p.address= mekan.adres
            p
